@@ -5,13 +5,28 @@ import csv from 'csv-parser';
 import pg from 'pg';
 
 const { Client } = pg;
-const dbConfig = {
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-};
+
+function buildDbConfig() {
+  if (process.env.DATABASE_URL) {
+    const url = new URL(process.env.DATABASE_URL);
+    return {
+      user: url.username,
+      password: url.password,
+      host: url.hostname,
+      port: parseInt(url.port) || 5432,
+      database: url.pathname.slice(1),
+    };
+  }
+  return {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+  };
+}
+
+const dbConfig = buildDbConfig();
 
 // Nueva función para insertar registros por lotes (Bulk Insert masivo)
 async function insertBatch(client, rows) {
