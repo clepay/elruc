@@ -1202,8 +1202,8 @@ app.post('/api/admin/gate', async (req, res) => {
 });
 
 // Servir frontend de producción (build de Vite)
-const frontendDist = path.resolve('..', 'frontend', 'dist');
-const SITE_DOMAIN = process.env.DOMAIN || 'elruc.com.py';
+const frontendDist = path.resolve('frontend', 'dist');
+const SITE_DOMAIN = process.env.DOMAIN || process.env.RAILWAY_TCP_PROXY_DOMAIN || 'elruc.com.py';
 
 app.get('/robots.txt', (req, res) => {
   res.type('text/plain').send(

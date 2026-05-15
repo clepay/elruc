@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "cd frontend && npm ci && npm run build && cd ../backend && npm ci --omit=dev",
-    "start": "cd backend && node src/server.js",
+    "start": "node backend/src/server.js",
     "dev": "concurrently -n backend,frontend -c blue,green \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
   },
   "devDependencies": {
